@@ -17,11 +17,8 @@ public class ApiGatewayApplication {
 	@Bean
 	public RouteLocator gatewayRoutes(RouteLocatorBuilder builder) {
 		return builder.routes()
-				.route("competence", r -> r
-						.path("/competence/**")
-						.filters(f -> f.stripPrefix(1))
-						.uri("lb://competence")) // URI basée sur le nom Eureka
-				.build();
+				.route("competence", r -> r.path("/competences/**")
+						.uri("http://localhost:8084")).build();
 	}
 
 
