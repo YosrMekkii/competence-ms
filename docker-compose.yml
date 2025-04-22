@@ -2,15 +2,12 @@ version: "3.8"
 
 services:
   backend:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
+    build: C:\Users\yosrm\IdeaProjects\competence-ms\backend\competence
     ports:
       - "8080:8080"
 
   frontend:
     build:
-      context: ./front
-      dockerfile: Dockerfile
+      context: C:\Users\yosrm\IdeaProjects\competence-ms\front
     ports:
-      - "4200:80"
+      - "4200:4200"
