@@ -8,7 +8,7 @@ import { Competence } from '../models/competence.model';
 export class CompetenceService {
 
   // API Gateway URL
-  private apiUrl = 'http://localhost:8093/competences';
+  private apiUrl = 'http://localhost:8084/competences';
 
   constructor(private http: HttpClient) { }
 

@@ -1,106 +1,72 @@
-<div class="container mt-4">
-    <div class="row mb-4">
-      <div class="col">
-        <h2>Liste des Compétences</h2>
-      </div>
-      <div class="col-auto">
-        <button mat-raised-button color="primary" routerLink="/competences/new">
-          <mat-icon>add</mat-icon> Nouvelle Compétence
-        </button>
-      </div>
-    </div>
-  
-    <mat-card>
-      <mat-card-content>
-        <div class="row mb-3">
-          <div class="col-md-4">
-            <mat-form-field appearance="outline" class="w-100">
-              <mat-label>Filtrer par Catégorie</mat-label>
-              <input matInput [(ngModel)]="searchCategorie" placeholder="Catégorie">
-              <button mat-button matSuffix mat-icon-button (click)="filterByCategorie()">
-                <mat-icon>search</mat-icon>
-              </button>
-            </mat-form-field>
-          </div>
-          <div class="col-md-4">
-            <mat-form-field appearance="outline" class="w-100">
-              <mat-label>Filtrer par Niveau Minimum</mat-label>
-              <input matInput [(ngModel)]="searchNiveau" type="number" min="1" max="5" placeholder="Niveau">
-              <button mat-button matSuffix mat-icon-button (click)="filterByNiveau()">
-                <mat-icon>search</mat-icon>
-              </button>
-            </mat-form-field>
-          </div>
-          <div class="col-md-4 d-flex align-items-center">
-            <button mat-button color="warn" (click)="resetFilters()">
-              <mat-icon>clear</mat-icon> Réinitialiser les filtres
-            </button>
-          </div>
-        </div>
-  
-        <div class="mat-elevation-z8">
-          <table mat-table [dataSource]="dataSource" matSort>
-            <!-- ID Column -->
-            <ng-container matColumnDef="id">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
-              <td mat-cell *matCellDef="let element">{{ element.id }}</td>
-            </ng-container>
-  
-            <!-- Nom Column -->
-            <ng-container matColumnDef="nom">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header>Nom</th>
-              <td mat-cell *matCellDef="let element">{{ element.nom }}</td>
-            </ng-container>
-  
-            <!-- Description Column -->
-            <ng-container matColumnDef="description">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header>Description</th>
-              <td mat-cell *matCellDef="let element">{{ element.description }}</td>
-            </ng-container>
-  
-            <!-- Niveau Column -->
-            <ng-container matColumnDef="niveau">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header>Niveau</th>
-              <td mat-cell *matCellDef="let element">
-                <span [ngClass]="{'text-danger': element.niveau <= 2, 'text-warning': element.niveau === 3, 'text-success': element.niveau >= 4}">
-                  {{ element.niveau }}/5
-                </span>
-              </td>
-            </ng-container>
-  
-            <!-- Catégorie Column -->
-            <ng-container matColumnDef="categorie">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header>Catégorie</th>
-              <td mat-cell *matCellDef="let element">{{ element.categorie }}</td>
-            </ng-container>
-  
-            <!-- Actions Column -->
-            <ng-container matColumnDef="actions">
-              <th mat-header-cell *matHeaderCellDef>Actions</th>
-              <td mat-cell *matCellDef="let element">
-                <button mat-icon-button color="primary" (click)="viewCompetence(element.id)" matTooltip="Voir détails">
-                  <mat-icon>visibility</mat-icon>
-                </button>
-                <button mat-icon-button color="accent" (click)="editCompetence(element.id)" matTooltip="Modifier">
-                  <mat-icon>edit</mat-icon>
-                </button>
-                <button mat-icon-button color="warn" (click)="deleteCompetence(element.id)" matTooltip="Supprimer">
-                  <mat-icon>delete</mat-icon>
-                </button>
-              </td>
-            </ng-container>
-  
-            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-  
-            <!-- Row shown when there is no matching data. -->
-            <tr class="mat-row" *matNoDataRow>
-              <td class="mat-cell" colspan="6">Aucune compétence trouvée</td>
-            </tr>
-          </table>
-  
-          <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons></mat-paginator>
-        </div>
-      </mat-card-content>
-    </mat-card>
+<mat-card>
+  <h2>Liste des compétences</h2>
+
+  <div style="text-align: right; margin-bottom: 16px;">
+    <button mat-raised-button color="primary" routerLink="/competences/new">
+      <mat-icon>add</mat-icon> Ajouter une compétence
+    </button>
   </div>
+
+  <div class="filters">
+    <mat-form-field appearance="fill">
+      <mat-label>Catégorie</mat-label>
+      <input matInput [(ngModel)]="searchCategorie" (keyup)="filterByCategorie()" placeholder="Filtrer par catégorie">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Niveau</mat-label>
+      <input matInput type="number" [(ngModel)]="searchNiveau" (keyup)="filterByNiveau()" placeholder="Filtrer par niveau">
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" (click)="resetFilters()">Réinitialiser</button>
+  </div>
+
+  <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+      <td mat-cell *matCellDef="let element">{{ element.id }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="nom">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Nom</th>
+      <td mat-cell *matCellDef="let element">{{ element.nom }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="description">
+      <th mat-header-cell *matHeaderCellDef>Description</th>
+      <td mat-cell *matCellDef="let element">{{ element.description }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="niveau">
+      <th mat-header-cell *matHeaderCellDef>Niveau</th>
+      <td mat-cell *matCellDef="let element">{{ element.niveau }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="categorie">
+      <th mat-header-cell *matHeaderCellDef>Catégorie</th>
+      <td mat-cell *matCellDef="let element">{{ element.categorie }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef>Actions</th>
+      <td mat-cell *matCellDef="let element">
+        <button mat-icon-button color="primary" (click)="viewCompetence(element.id)">
+          <mat-icon>visibility</mat-icon>
+        </button>
+        <button mat-icon-button color="accent" (click)="editCompetence(element.id)">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button color="warn" (click)="deleteCompetence(element.id)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+  </table>
+
+  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+</mat-card>

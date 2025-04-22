@@ -1,84 +1,35 @@
-<div class="container mt-4">
-    <div class="row mb-4">
-      <div class="col">
-        <h2>{{ isEditMode ? 'Modifier' : 'Ajouter' }} une Compétence</h2>
-      </div>
-      <div class="col-auto">
-        <button mat-raised-button color="primary" routerLink="/competences">
-          <mat-icon>arrow_back</mat-icon> Retour à la liste
-        </button>
-      </div>
+<mat-card>
+  <h2 *ngIf="!isEditMode">Ajouter une compétence</h2>
+  <h2 *ngIf="isEditMode">Modifier la compétence</h2>
+
+  <form [formGroup]="competenceForm" (ngSubmit)="onSubmit()">
+    <mat-form-field appearance="fill">
+      <mat-label>Nom</mat-label>
+      <input matInput formControlName="nom" placeholder="Nom de la compétence">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Description</mat-label>
+      <textarea matInput formControlName="description"></textarea>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Niveau (1 à 5)</mat-label>
+      <input matInput type="number" formControlName="niveau" min="1" max="5">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Catégorie</mat-label>
+      <mat-select formControlName="categorie">
+        <mat-option *ngFor="let cat of categories" [value]="cat">{{ cat }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <div style="margin-top: 20px;">
+      <button mat-raised-button color="primary" type="submit" [disabled]="competenceForm.invalid">
+        {{ isEditMode ? 'Modifier' : 'Ajouter' }}
+      </button>
+      <button mat-button color="warn" routerLink="/competences">Annuler</button>
     </div>
-  
-    <mat-card>
-      <mat-card-content>
-        <form [formGroup]="competenceForm" (ngSubmit)="onSubmit()">
-          <div class="row">
-            <div class="col-md-6">
-              <mat-form-field appearance="outline" class="w-100">
-                <mat-label>Nom de la compétence</mat-label>
-                <input matInput formControlName="nom" placeholder="Ex: Spring Boot">
-                <mat-error *ngIf="competenceForm.controls['nom'].hasError('required')">
-                  Le nom est obligatoire
-                </mat-error>
-                <mat-error *ngIf="competenceForm.controls['nom'].hasError('minlength')">
-                  Le nom doit contenir au moins 3 caractères
-                </mat-error>
-              </mat-form-field>
-            </div>
-  
-            <div class="col-md-6">
-              <mat-form-field appearance="outline" class="w-100">
-                <mat-label>Catégorie</mat-label>
-                <mat-select formControlName="categorie">
-                  <mat-option *ngFor="let categorie of categories" [value]="categorie">
-                    {{ categorie }}
-                  </mat-option>
-                </mat-select>
-                <mat-error *ngIf="competenceForm.controls['categorie'].hasError('required')">
-                  La catégorie est obligatoire
-                </mat-error>
-              </mat-form-field>
-            </div>
-          </div>
-  
-          <div class="row">
-            <div class="col-md-6">
-              <mat-form-field appearance="outline" class="w-100">
-                <mat-label>Niveau (1-5)</mat-label>
-                <input matInput type="number" formControlName="niveau" min="1" max="5">
-                <mat-error *ngIf="competenceForm.controls['niveau'].hasError('required')">
-                  Le niveau est obligatoire
-                </mat-error>
-                <mat-error *ngIf="competenceForm.controls['niveau'].hasError('min') || competenceForm.controls['niveau'].hasError('max')">
-                  Le niveau doit être entre 1 et 5
-                </mat-error>
-              </mat-form-field>
-            </div>
-          </div>
-  
-          <div class="row">
-            <div class="col-12">
-              <mat-form-field appearance="outline" class="w-100">
-                <mat-label>Description</mat-label>
-                <textarea matInput formControlName="description" rows="4" placeholder="Décrivez cette compétence..."></textarea>
-                <mat-error *ngIf="competenceForm.controls['description'].hasError('required')">
-                  La description est obligatoire
-                </mat-error>
-                <mat-error *ngIf="competenceForm.controls['description'].hasError('minlength')">
-                  La description doit contenir au moins 10 caractères
-                </mat-error>
-              </mat-form-field>
-            </div>
-          </div>
-  
-          <div class="d-flex justify-content-end mt-3">
-            <button mat-button type="button" (click)="resetForm()">Réinitialiser</button>
-            <button mat-raised-button color="primary" type="submit" [disabled]="competenceForm.invalid">
-              {{ isEditMode ? 'Mettre à jour' : 'Ajouter' }}
-            </button>
-          </div>
-        </form>
-      </mat-card-content>
-    </mat-card>
-  </div>
+  </form>
+</mat-card>

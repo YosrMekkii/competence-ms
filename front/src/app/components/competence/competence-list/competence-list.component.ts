@@ -71,8 +71,13 @@ export class CompetenceListComponent implements OnInit, AfterViewInit {
       next: (data) => {
         this.competences = data;
         this.dataSource = new MatTableDataSource(this.competences);
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
+  
+        // Assure que le paginator et le sort sont bien reliés après un cycle de changement
+        setTimeout(() => {
+          this.dataSource.paginator = this.paginator;
+          this.dataSource.sort = this.sort;
+        });
+  
       },
       error: (error) => {
         console.error('Erreur lors du chargement des compétences:', error);
@@ -82,6 +87,7 @@ export class CompetenceListComponent implements OnInit, AfterViewInit {
       }
     });
   }
+  
 
   filterByCategorie(): void {
     if (this.searchCategorie) {
